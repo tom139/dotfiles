@@ -1,0 +1,7 @@
+[submodule "vimrc"]
+	path = vimrc
+	url = https://github.com/tom139/vimrc.git
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	ignore = dirty

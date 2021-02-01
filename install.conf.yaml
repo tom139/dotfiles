@@ -1,0 +1,11 @@
+# instal brew and commands
+- shell:
+  - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+- link:
+    ~/.brew.sh:
+
+# install awesome vim
+- link:
+    ~/.vimrc:
+- shell:
+  - ~/.vimrc/install_awesome_vimrc.sh
