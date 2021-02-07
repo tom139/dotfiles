@@ -13,3 +13,7 @@
     ~/.vimrc:
 - shell:
   - ~/.vimrc/install_awesome_vimrc.sh
+- link:
+    ~/.vimrc/my_configs.vim:
+      path: vim/my_configs.vim
+
