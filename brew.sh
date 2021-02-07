@@ -35,13 +35,13 @@ brew install gnu-sed --with-default-names
 # brew install wget --with-iri
 
 # Install GnuPG to enable PGP-signing commits.
-brew install gnupg
+# brew install gnupg
 
 # Install more recent versions of some macOS tools.
 brew install vim --with-override-system-vi
-brew install grep
-brew install openssh
-brew install screen
+# brew install grep
+# brew install openssh
+# brew install screen
 # brew install php
 # brew install gmp
 
@@ -102,12 +102,12 @@ brew install aws-sam-cli
 brew install docker-credential-helper-ecr
 
 # other useful things
-brew install cocoapods
+# brew install cocoapods
 brew install fswatch
 brew install gh # github cli
 brew install go
-brew install corretto
-brew install corretto8
+# brew install corretto
+# brew install corretto8
 brew install htop
 brew install jq
 brew install httpie
