@@ -106,6 +106,7 @@ brew install docker-credential-helper-ecr
 brew install fswatch
 brew install gh # github cli
 brew install go
+brew install ruby
 # brew install corretto
 # brew install corretto8
 brew install htop

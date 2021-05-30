@@ -8,7 +8,14 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+# ZSH_THEME="afowler"
+# ZSH_THEME="fishy"
+# ZSH_THEME="intheloop"
+# ZSH_THEME="my-afowler"
+
+autoload -U promptinit; promptinit
+prompt pure
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -83,6 +90,8 @@ plugins=(
   docker
   docker-compose
   globalias
+  # CUSTOM
+  poetry
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -117,12 +126,15 @@ source $ZSH/oh-my-zsh.sh
 
 # pyenv support
 # pyenv MUST be installed
-# eval "$(pyenv init -)"
+eval "$(pyenv init - zsh)"
 
 # NVM support
 # nvm MUST be installed
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# use ruby from brew
+export PATH="/usr/local/opt/ruby/bin:$PATH"
 
 # set the prevent AWS to use a pager for all requests
 export AWS_PAGER="jq"
@@ -135,9 +147,17 @@ alias L='| less'
 alias G='| grep'
 alias Y='--output yaml | yq'
 alias J='--output json | jq'
+alias pycharm='open -a PyCharm\ CE.app'
 
 # aliases in this array will not be expanded by globalias
 # i.e. if you type `https<space>` it will be transformed to
 # `http --default-scheme=https` unless `https` is in this list
 export GLOBALIAS_FILTER_VALUES=(https ls z ll l)
+
+# mir bot tool
+eval "$(_BOT_COMPLETE=source_zsh bot)"
+
+# load nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
