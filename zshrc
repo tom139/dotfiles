@@ -126,6 +126,18 @@ source $ZSH/oh-my-zsh.sh
 
 # pyenv support
 # pyenv MUST be installed
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+# Load pyenv into the shell by adding
+# the following to ~/.zshrc:
+
+eval "$(pyenv init -)"
+
+# Make sure to restart your entire logon session
+# for changes to profile files to take effect.
 eval "$(pyenv init - zsh)"
 
 # NVM support
@@ -148,11 +160,13 @@ alias G='| grep'
 alias Y='--output yaml | yq'
 alias J='--output json | jq'
 alias pycharm='open -a PyCharm\ CE.app'
+alias luca="say -v 'Luca'"
+alias daniel="say -v 'Daniel'"
 
 # aliases in this array will not be expanded by globalias
 # i.e. if you type `https<space>` it will be transformed to
 # `http --default-scheme=https` unless `https` is in this list
-export GLOBALIAS_FILTER_VALUES=(https ls z ll l)
+export GLOBALIAS_FILTER_VALUES=(https ls z ll l grep luca daniel)
 
 # mir bot tool
 eval "$(_BOT_COMPLETE=source_zsh bot)"
