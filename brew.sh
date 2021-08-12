@@ -97,9 +97,9 @@ brew install tree
 # brew install zopfli
 
 # install aws related thigs
-brew install awscli
-brew install aws-sam-cli
-brew install docker-credential-helper-ecr
+# brew install awscli
+# brew install aws-sam-cli
+# brew install docker-credential-helper-ecr
 
 # other useful things
 # brew install cocoapods
@@ -112,7 +112,8 @@ brew install ruby
 brew install htop
 brew install jq
 brew install httpie
-brew install python
+# brew install python
+brew install pyenv
 brew install swiftgen
 brew install telnet
 brew install speedtest
