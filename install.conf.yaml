@@ -8,10 +8,6 @@
 - link:
     ~/.zshrc:
       force: true
-    ~/.gitignore_global:
-      force: true
-    ~/.bigqueryrc:
-      force: true
 
 # install brew and commands
 - shell:
@@ -22,9 +18,13 @@
 
 # eventually install awesome vim
 - shell:
-  - description: Eventually install VIM settings
+  - description: Install awesome VIM settings
     command: |-
-      [[ -f ~/.vimrc ]] || ./vimrc/install_awesome_parameterized.sh "$PWD/vimrc" "$USER"
+      ./vim_runtime/install_awesome_parameterized.sh "$PWD/vim_runtime" "$USER"
+
+# link the custom vim configs
+- link:
+    ./vim_runtime/my_configs.vim: vim/my_configs.vim
 
 # install global gitignore
 - link:
@@ -33,3 +33,4 @@
 # install global bigquery options
 - link:
     ~/.bigqueryrc: bigqueryrc
+
