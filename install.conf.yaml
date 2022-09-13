@@ -1,27 +1,35 @@
 # install oh my zsh
 - shell:
-    # eventually install oh my zsh
-    - 
+    - description: eventually install oh my zsh
       command: >-
         [[ -d ~/.oh-my-zsh ]] || 
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-      description: eventually install oh my zsh
+
 - link:
-    ~/.zshrc
+    ~/.zshrc:
+      force: true
+    ~/.gitignore_global:
+      force: true
+    ~/.bigqueryrc:
+      force: true
 
 # install brew and commands
 - shell:
-  
-    - command: >-
+    - descrition: eventually install brew and formulae
+      command: >-
         which brew || 
         (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && ./brew.sh)
-      descrition: eventually install brew and formulae
 
-# install awesome vim
-- link:
-    ~/.vim_runtime:
+# eventually install awesome vim
 - shell:
-    - ~/.vim_runtime/install_awesome_vimrc.sh
+  - description: Eventually install VIM settings
+    command: |-
+      [[ -f ~/.vimrc ]] || ./vimrc/install_awesome_parameterized.sh "$PWD/vimrc" "$USER"
+
+# install global gitignore
 - link:
-    ~/.vimrc/my_configs.vim:
-      path: vim/my_configs.vim
+    ~/.gitignore_global: gitignore_global
+
+# install global bigquery options
+- link:
+    ~/.bigqueryrc: bigqueryrc
