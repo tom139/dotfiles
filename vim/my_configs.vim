@@ -5,3 +5,6 @@ set number
 command! Wq wq
 command! W w
 
+# enable fzf in vim
+set rtp+=/opt/homebrew/opt/fzf
+

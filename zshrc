@@ -4,6 +4,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+# Enable brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -14,8 +17,13 @@ export ZSH=$HOME/.oh-my-zsh
 # ZSH_THEME="intheloop"
 # ZSH_THEME="my-afowler"
 
+# this is required as site-funciton location changed in M1 https://github.com/sindresorhus/pure/issues/584
+fpath+=/opt/homebrew/share/zsh/site-functions
 autoload -U promptinit; promptinit
 prompt pure
+
+# load nvm
+export NVM_LAZY_LOAD=true
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -79,8 +87,9 @@ prompt pure
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  # node
-  # npm
+  node
+  npm
+  yarn
   # brew
   # osx
   z
@@ -90,8 +99,8 @@ plugins=(
   docker
   docker-compose
   globalias
-  # CUSTOM
-  poetry
+  # slack
+  zsh-nvm # see https://github.com/lukechilds/zsh-nvm#as-an-oh-my-zsh-custom-plugin
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -126,19 +135,23 @@ source $ZSH/oh-my-zsh.sh
 
 # pyenv support
 # pyenv MUST be installed
-
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 
-# Load pyenv into the shell by adding
-# the following to ~/.zshrc:
-
-eval "$(pyenv init -)"
-
-# Make sure to restart your entire logon session
-# for changes to profile files to take effect.
-eval "$(pyenv init - zsh)"
+# remove following lines to restore
+#  export PYENV_ROOT="$HOME/.pyenv"
+#  export PATH="$PYENV_ROOT/bin:$PATH"
+#  eval "$(pyenv init --path)"
+#  
+#  # Load pyenv into the shell by adding
+#  # the following to ~/.zshrc:
+#  
+#  eval "$(pyenv init -)"
+#  
+#  # Make sure to restart your entire logon session
+#  # for changes to profile files to take effect.
+#  eval "$(pyenv init - zsh)"
 
 # NVM support
 # nvm MUST be installed
@@ -155,23 +168,79 @@ export AWS_PAGER="jq"
 alias https='http --default-scheme=https'
 alias npm-exec='PATH=$(npm bin):$PATH'
 
-alias L='| less'
-alias G='| grep'
-alias Y='--output yaml | yq'
+alias L='less'
+alias G='grep'
+alias Y='yq e "." -'
 alias J='--output json | jq'
-alias pycharm='open -a PyCharm\ CE.app'
+alias pycharm='open -a PyCharm'
+alias webstorm='open -a WebStorm'
+alias vscode='open -a "Visual Studio Code"'
 alias luca="say -v 'Luca'"
 alias daniel="say -v 'Daniel'"
+alias t='terraform'
+alias ci='circleci'
+alias confetti='open raycast://confetti'
+
+# Gandalf Aliases
+alias gan-mercury='gandalf request dataViewer@project:mercury-42 infrastructureOwner@project:mercury-42 --end "in 8h"'
+alias gan-mercury-staging='gandalf request dataViewer@project:mercury-staging-42 infrastructureOwner@project:mercury-staging-42 --end "in 8h"'
+alias gan-scrat='gandalf request dataViewer@project:scrat-42 infrastructureOwner@project:scrat-42 --end "in 8h"'
+alias gan-scrat-staging='gandalf request dataViewer@project:scrat-staging-42 infrastructureOwner@project:scrat-staging-42 --end "in 8h"'
+alias gan-scrat-development='gandalf request dataViewer@project:scrat-development-42 infrastructureOwner@project:scrat-development-42 --end "in 8h"'
+alias gan-adapter='gandalf request dataViewer@project:adapter-42 infrastructureOwner@project:adapter-42 --end "in 8h"'
+alias gan-adapter-staging='gandalf request dataViewer@project:adapter-staging-42 infrastructureOwner@project:adapter-staging-42 --end "in 8h"'
+alias gan-adapter-development='gandalf request dataViewer@project:adapter-development-42 infrastructureOwner@project:adapter-development-42 --end "in 8h"'
+
+# GitHub Aliases
+alias gh-checks='gh pr checks --watch && daniel "all checks have passed" && echo " ✅ all checks have passed" || daniel "Some checks have failed" && echo " ❌ some checks have failed"'
 
 # aliases in this array will not be expanded by globalias
 # i.e. if you type `https<space>` it will be transformed to
 # `http --default-scheme=https` unless `https` is in this list
-export GLOBALIAS_FILTER_VALUES=(https ls z ll l grep luca daniel)
+export GLOBALIAS_FILTER_VALUES=(https ls z ll l grep luca daniel KEY pycharm webstorm vscode confetti)
 
-# mir bot tool
-eval "$(_BOT_COMPLETE=source_zsh bot)"
+export PATH="$HOME/.local/bin:$PATH"
 
-# load nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# if the `.artifactory-setup.zsh` file exists, source it!
+BSP_SETUP="$HOME/.bsp-setup.zsh"
+if [[ -f "$BSP_SETUP" ]];
+then
+  source "$BSP_SETUP"
+fi
+unset ARTIFACTORY_SETUP
+
+# used by gpg when signign commits
+export GPG_TTY=$(tty)
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tp/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/tp/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+autoload -U +X bashcompinit && bashcompinit
+
+# To allow intallation of grpcio on M1
+# export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
+# export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
+# export LDFLAGS="-L/opt/homebrew/opt/openssl/lib"
+# export CFLAGS="-I/opt/homebrew/opt/openssl/include"
+
+
+# to use vim as default visual editor
+export EDITOR="vim"
+export VISUAL="vim"
+
+# Gandalf completions
+source ~/.gandalf/completions.zsh
+
+# Terraform autocompletion and parallelism
+complete -o nospace -C /opt/homebrew/Cellar/tfenv/2.2.2/versions/1.1.2/terraform terraform
+export TF_CLI_ARGS_plan="-parallelism=80"
+export TF_CLI_ARGS_apply="-parallelism=80"
+
+# Docker support with lima
+export DOCKER_HOST=unix:///Users/tp/.lima/docker/sock/docker.sock
 
