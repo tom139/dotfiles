@@ -8,3 +8,6 @@ command! W w
 # enable fzf in vim
 set rtp+=/opt/homebrew/opt/fzf
 
+# load the plugins
+packloadall
+

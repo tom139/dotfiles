@@ -180,6 +180,9 @@ alias daniel="say -v 'Daniel'"
 alias t='terraform'
 alias ci='circleci'
 alias confetti='open raycast://confetti'
+alias ghpc='gh pr create --assignee @me -w'
+alias ghpv='gh pr view -w || gh pr create --assignee @me -w'
+alias watch_pr='(gh pr checks --watch -i 10 && open raycast://confetti) || osascript -e "display notification with title \"Ooops!\" subtitle \"Some checks failed in the PR.\" sound name \"Submarine\""'
 
 # Gandalf Aliases
 alias gan-mercury='gandalf request dataViewer@project:mercury-42 infrastructureOwner@project:mercury-42 --end "in 8h"'
@@ -244,3 +247,11 @@ export TF_CLI_ARGS_apply="-parallelism=80"
 # Docker support with lima
 export DOCKER_HOST=unix:///Users/tp/.lima/docker/sock/docker.sock
 
+# GKE support
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# support for fuzzy search (install with homebrew if missing)
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# enable vim mode
+set -o vi
