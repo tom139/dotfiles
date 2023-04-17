@@ -17,10 +17,10 @@
         (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && ./brew.sh)
 
 # eventually install awesome vim
-- shell:
-  - description: Install awesome VIM settings
-    command: |-
-      ./vim_runtime/install_awesome_parameterized.sh "$PWD/vim_runtime" "$USER"
+# - shell:
+#   - description: Install awesome VIM settings
+#     command: |-
+#       ./vim_runtime/install_awesome_parameterized.sh "$PWD/vim_runtime" "$USER"
 
 # link the custom vim configs
 - link:
