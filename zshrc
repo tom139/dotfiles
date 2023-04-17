@@ -1,11 +1,15 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# enable brew completion (must remain before sourcing oh-my-zsh
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # Enable brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(brew shellenv)"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -90,6 +94,7 @@ plugins=(
   node
   npm
   yarn
+  vi-mode
   # brew
   # osx
   z
@@ -104,6 +109,10 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# setup vi-mode
+INSERT_MODE_INDICATOR="%F{yellow}+%f"
+bindkey -M viins 'jk' vi-cmd-mode
 
 # User configuration
 
@@ -216,12 +225,6 @@ unset ARTIFACTORY_SETUP
 export GPG_TTY=$(tty)
 
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/tp/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/tp/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/completion.zsh.inc'; fi
-
 
 autoload -U +X bashcompinit && bashcompinit
 
@@ -233,8 +236,8 @@ autoload -U +X bashcompinit && bashcompinit
 
 
 # to use vim as default visual editor
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 # Gandalf completions
 source ~/.gandalf/completions.zsh
@@ -244,9 +247,6 @@ complete -o nospace -C /opt/homebrew/Cellar/tfenv/2.2.2/versions/1.1.2/terraform
 export TF_CLI_ARGS_plan="-parallelism=80"
 export TF_CLI_ARGS_apply="-parallelism=80"
 
-# Docker support with lima
-export DOCKER_HOST=unix:///Users/tp/.lima/docker/sock/docker.sock
-
 # GKE support
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
@@ -255,3 +255,41 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # enable vim mode
 set -o vi
+
+# kubernetes aliases
+alias k='kubectl'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias krr='kubectl rollout restart'
+alias kctx="kubectx"
+alias kns="kubens"
+alias kl="kubectl logs"
+alias kjump="kubectl run jumpbox --image=gcr.io/registry-42/k8s-jumpbox:latest --override-type=strategic --overrides='{\"spec\":{\"nodeSelector\":{\"nodepool\":\"general-purpose\"},\"tolerations\":[{\"effect\":\"NoExecute\",\"key\":\"type\",\"value\":\"non-system\"}],\"securityContext\":{\"runAsNonRoot\":true,\"seccompProfile\":{\"type\":\"RuntimeDefault\"}},\"containers\":[{\"name\":\"jumpbox\", \"securityContext\":{\"allowPrivilegeEscalation\":false,\"capabilities\":{\"drop\":[\"ALL\"]}}}]}}' -- sleep infinity"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tp/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/tp/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/completion.zsh.inc'; fi
+
+complete -o nospace -C /usr/local/Cellar/tfenv/3.0.0/versions/1.4.0/terraform terraform
+#compdef gt
+###-begin-gt-completions-###
+#
+# yargs command completion script
+#
+# Installation: gt completion >> ~/.zshrc
+#    or gt completion >> ~/.zprofile on OSX.
+#
+_gt_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gt_yargs_completions gt
+###-end-gt-completions-###
+
