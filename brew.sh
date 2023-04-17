@@ -34,16 +34,19 @@ brew install gnu-sed --with-default-names
 # Install `wget` with IRI support.
 # brew install wget --with-iri
 
-# Install GnuPG to enable PGP-signing commits.
-# brew install gnupg
-
 # Install more recent versions of some macOS tools.
-brew install vim --with-override-system-vi
+brew install vim
+brew install neovim
+brew install tmux
+brew install --cask raycast
 # brew install grep
-# brew install openssh
+brew install openssh
 # brew install screen
 # brew install php
 # brew install gmp
+
+# Install GnuPG to enable PGP-signing commits.
+brew install gnupg
 
 # Install font tools.
 # brew tap bramstein/webfonttools
@@ -80,6 +83,7 @@ brew install vim --with-override-system-vi
 # Install other useful binaries.
 # brew install ack
 #brew install exiv2
+brew install fzf
 brew install git
 brew install git-lfs
 # brew install gs
@@ -96,10 +100,16 @@ brew install tree
 # brew install vbindiff
 # brew install zopfli
 
+# Install essentials
+brew install neovim
+brew install tmux
+brew install --cask raycast
+brew install kubectx
+
 # install aws related thigs
-# brew install awscli
-# brew install aws-sam-cli
-# brew install docker-credential-helper-ecr
+brew install awscli
+brew install aws-sam-cli
+brew install docker-credential-helper-ecr
 
 # other useful things
 # brew install cocoapods
@@ -114,7 +124,7 @@ brew install jq
 brew install httpie
 # brew install python
 brew install pyenv
-brew install swiftgen
+# brew install swiftgen
 brew install telnet
 brew install speedtest
 brew install tokei
