@@ -2,3 +2,6 @@
 --use_legacy_sql=false
 --maximum_bytes_billed=100000000
 
+[ls]
+--max_results=1000
+
