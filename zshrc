@@ -106,6 +106,7 @@ plugins=(
   globalias
   # slack
   zsh-nvm # see https://github.com/lukechilds/zsh-nvm#as-an-oh-my-zsh-custom-plugin
+  zsh-fzf-history-search
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -152,12 +153,12 @@ eval "$(pyenv init --path)"
 #  export PYENV_ROOT="$HOME/.pyenv"
 #  export PATH="$PYENV_ROOT/bin:$PATH"
 #  eval "$(pyenv init --path)"
-#  
+#
 #  # Load pyenv into the shell by adding
 #  # the following to ~/.zshrc:
-#  
+#
 #  eval "$(pyenv init -)"
-#  
+#
 #  # Make sure to restart your entire logon session
 #  # for changes to profile files to take effect.
 #  eval "$(pyenv init - zsh)"
@@ -181,7 +182,7 @@ alias L='less'
 alias G='grep'
 alias Y='yq e "." -'
 alias J='--output json | jq'
-alias pycharm='open -a PyCharm'
+alias pycharm='open -a PyCharm\ Professional\ Edition'
 alias webstorm='open -a WebStorm'
 alias vscode='open -a "Visual Studio Code"'
 alias luca="say -v 'Luca'"
@@ -192,6 +193,8 @@ alias confetti='open raycast://confetti'
 alias ghpc='gh pr create --assignee @me -w'
 alias ghpv='gh pr view -w || gh pr create --assignee @me -w'
 alias watch_pr='(gh pr checks --watch -i 10 && open raycast://confetti) || osascript -e "display notification with title \"Ooops!\" subtitle \"Some checks failed in the PR.\" sound name \"Submarine\""'
+alias dockrun='docker run --rm -it'
+alias n="nvim ."
 
 # Gandalf Aliases
 alias gan-mercury='gandalf request dataViewer@project:mercury-42 infrastructureOwner@project:mercury-42 --end "in 8h"'
@@ -265,12 +268,8 @@ alias kctx="kubectx"
 alias kns="kubens"
 alias kl="kubectl logs"
 alias kjump="kubectl run jumpbox --image=gcr.io/registry-42/k8s-jumpbox:latest --override-type=strategic --overrides='{\"spec\":{\"nodeSelector\":{\"nodepool\":\"general-purpose\"},\"tolerations\":[{\"effect\":\"NoExecute\",\"key\":\"type\",\"value\":\"non-system\"}],\"securityContext\":{\"runAsNonRoot\":true,\"seccompProfile\":{\"type\":\"RuntimeDefault\"}},\"containers\":[{\"name\":\"jumpbox\", \"securityContext\":{\"allowPrivilegeEscalation\":false,\"capabilities\":{\"drop\":[\"ALL\"]}}}]}}' -- sleep infinity"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/tp/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/tp/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/completion.zsh.inc'; fi
+# parse structured logs from kubernetes, use it: `kubectl logs <pod> | prettylog`
+alias prettylog='jq -rR "fromjson? | [.severity, .timestamp, .message[0:100] | gsub(\"[\\n\\t]\"; \" \")] | join(\" | \")"'
 
 complete -o nospace -C /usr/local/Cellar/tfenv/3.0.0/versions/1.4.0/terraform terraform
 #compdef gt
@@ -293,3 +292,12 @@ _gt_yargs_completions()
 compdef _gt_yargs_completions gt
 ###-end-gt-completions-###
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tp/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/tp/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tp/google-cloud-sdk/completion.zsh.inc'; fi
+
+# WARPify subshels (see: https://docs.warp.dev/features/subshells)
+printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}\x9c'

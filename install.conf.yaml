@@ -1,36 +1,28 @@
-# install oh my zsh
+- clean: ['~']
+
 - shell:
-    - description: eventually install oh my zsh
-      command: >-
-        [[ -d ~/.oh-my-zsh ]] || 
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  - description: eventually install oh my zsh
+    command: >-
+      [[ -d ~/.oh-my-zsh ]] ||
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 - link:
-    ~/.zshrc:
-      force: true
-
-# install brew and commands
-- shell:
-    - descrition: eventually install brew and formulae
-      command: >-
-        which brew || 
-        (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && ./brew.sh)
-
-# eventually install awesome vim
-# - shell:
-#   - description: Install awesome VIM settings
-#     command: |-
-#       ./vim_runtime/install_awesome_parameterized.sh "$PWD/vim_runtime" "$USER"
-
-# link the custom vim configs
-- link:
-    ./vim_runtime/my_configs.vim: vim/my_configs.vim
-
-# install global gitignore
-- link:
+  ~/.zshrc:
+    force: true
+    ~/.config/nvim:
+      path: nvim/
+      create: true
+    ~/.tmux.conf: tmux.conf
     ~/.gitignore_global: gitignore_global
-
-# install global bigquery options
-- link:
     ~/.bigqueryrc: bigqueryrc
 
+- shell:
+  - descrition: eventually install brew and formulae
+    command: >-
+      which brew ||
+      (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && ./brew.sh)
+  - description: install tmux plugin manager
+    command: >-
+      [[ -d ~/.tmux/plugins/tpm ]] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  - description: setup the global gitignore
+    command: git config --global core.excludesfile ~/.gitignore_global

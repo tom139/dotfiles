@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 # Install command-line tools using Homebrew.
+softwareupdate --install-rosetta
 
 # Make sure we’re using the latest Homebrew.
 brew update
@@ -84,6 +85,7 @@ brew install gnupg
 # brew install ack
 #brew install exiv2
 brew install fzf
+brew install ripgrep
 brew install git
 brew install git-lfs
 # brew install gs
@@ -101,7 +103,7 @@ brew install tree
 # brew install zopfli
 
 # Install essentials
-brew install neovim
+brew install colima docker docker-credential-helper
 brew install tmux
 brew install --cask raycast
 brew install kubectx

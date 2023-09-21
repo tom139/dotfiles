@@ -34,3 +34,6 @@ Temporary Items
 
 # snyk files
 .dcignore
+
+# mypy daemon
+.dmypy.json
